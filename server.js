@@ -11,7 +11,7 @@ server.use(express.json()); //for posts
 server.use(helmet()); //a little bit of protection
 server.use(morgan('dev'));
 
-server.use('/api/posts',  postsRouter);
+server.use('/api/users',  postsRouter);
 
 server.get('/', (req, res) => {
     res.send(`
