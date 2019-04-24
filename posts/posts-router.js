@@ -19,9 +19,81 @@ router.get('/', (req, res) => {
     })
 })
 
+//GET BY ID
+router.get('/:id', (req, res) => {
+    const userId = req.params.id;
+    console.log('request userId is working')
 
+    if (!userId) {
+        res.status(404).json({ message: "The user with the specified ID does not exist." })
+    }
+    userDb 
+    .getById(userId)
+    .then(user => {
+        res.status(201).json(user);
+    })
+    .catch(err => {
+        res.status(500).json({ error: err, message: 'The users information could not be retrieved.'})
+    })
+})
 
+//POST
+router.post('/', (req, res) => {
+    const userInfo = req.body;
+    console.log('userInfo');
 
+    if (!req.body.name) {
+        res.status(400).json({ errorMessage: "Please provide id and name for the user." })
+    }
+
+    userDb
+    .insert(userInfo)
+    .then(user => {
+        res.status(200).json(user);
+    })
+    .catch(err => {
+        res.status(500).json({ error: err, message: 'There was an error while saving the post to the database'})
+    })
+})
+
+//UPDATE
+router.put('/:id', (req, res) => {
+    const userId = req.params.id;
+    const userInfo = req.body;
+    console.log('request body:', userInfo);
+
+    if (!userId) {
+        res.status(404).json({ message: "The post with the specified ID does not exist."  })
+    } 
+
+    userDb
+    .update(userId, userInfo)
+    .then(user => {
+        res.status(200).json(user);
+    })
+    .catch(error => {
+        res.status(500).json({ error: err, message: "The post information could not be modified."})
+    })
+})
+
+//DELETE
+router.delete('/:id', (req, res) => {
+    const userId = req.params.id;
+
+    if (!userId) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+
+    userDb
+    .remove(userId)
+    .then(deleted => {
+        res.status(201).end();
+    })
+    .catch(error => {
+        res.status(500).json({ error: err, message: "The post could not be removed." })
+    })
+
+})
 
 
 
@@ -30,6 +102,7 @@ router.get('/', (req, res) => {
 
 
 //REQUESTS FOR POSTS
+//GET
 router.get('/posts', (req, res) => {
     postDb
     .get()
@@ -41,6 +114,23 @@ router.get('/posts', (req, res) => {
     })
 })
 
+// GET BY ID
+router.get('/posts/:id', (req, res) => {
+    const postId = req.params.id;
+    console.log('request postId is working')
+
+    if (!postId) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+    postDb 
+    .getById(postId)
+    .then(post => {
+        res.status(201).json(post);
+    })
+    .catch(err => {
+        res.status(500).json({ error: err, message: 'The posts information could not be retrieved.'})
+    })
+})
 
 
 
