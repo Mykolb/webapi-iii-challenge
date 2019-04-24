@@ -36,5 +36,63 @@ router.get('/posts/:id', (req, res) => {
     })
 })
 
+//POST
+router.post('/', (req, res) => {
+    const postInfo = req.body;
+    console.log('postInfo');
+
+    if (!req.body.text || !req.body.user_id) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
+
+    postDb
+    .insert(postInfo)
+    .then(post => {
+        res.status(200).json(post);
+    })
+    .catch(err => {
+        res.status(500).json({ error: err, message: 'There was an error while saving the post to the database'})
+    })
+})
+
+
+//UPDATE
+router.put('/:id', (req, res) => {
+    const postId = req.params.id;
+    const postInfo = req.body;
+    console.log('request body:', postInfo);
+
+    if (!postId) {
+        res.status(404).json({ message: "The post with the specified ID does not exist."  })
+    } 
+
+    postDb
+    .update(postId, postInfo)
+    .then(post => {
+        res.status(200).json(post);
+    })
+    .catch(error => {
+        res.status(500).json({ error: err, message: "The post information could not be modified."})
+    })
+})
+
+router.delete('/:id', (req, res) => {
+    const postId = req.params.id;
+
+    if (!postId) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+
+    postDb
+    .remove(postId)
+    .then(deleted => {
+        res.status(201).end();
+    })
+    .catch(error => {
+        res.status(500).json({ error: err, message: "The post could not be removed." })
+    })
+
+})
+
 
 module.exports = router;

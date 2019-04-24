@@ -50,7 +50,7 @@ router.post('/', (req, res) => {
         res.status(200).json(user);
     })
     .catch(err => {
-        res.status(500).json({ error: err, message: 'There was an error while saving the post to the database'})
+        res.status(500).json({ error: err, message: 'There was an error while saving the user to the database'})
     })
 })
 
@@ -61,7 +61,7 @@ router.put('/:id', (req, res) => {
     console.log('request body:', userInfo);
 
     if (!userId) {
-        res.status(404).json({ message: "The post with the specified ID does not exist."  })
+        res.status(404).json({ message: "The user with the specified ID does not exist."  })
     } 
 
     userDb
@@ -70,7 +70,7 @@ router.put('/:id', (req, res) => {
         res.status(200).json(user);
     })
     .catch(error => {
-        res.status(500).json({ error: err, message: "The post information could not be modified."})
+        res.status(500).json({ error: err, message: "The user information could not be modified."})
     })
 })
 
@@ -79,7 +79,7 @@ router.delete('/:id', (req, res) => {
     const userId = req.params.id;
 
     if (!userId) {
-        res.status(404).json({ message: "The post with the specified ID does not exist." })
+        res.status(404).json({ message: "The user with the specified ID does not exist." })
     }
 
     userDb
@@ -88,7 +88,7 @@ router.delete('/:id', (req, res) => {
         res.status(201).end();
     })
     .catch(error => {
-        res.status(500).json({ error: err, message: "The post could not be removed." })
+        res.status(500).json({ error: err, message: "The user could not be removed." })
     })
 
 })
