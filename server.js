@@ -3,15 +3,16 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 //router
-const postsRouter = require('./posts/posts-router.js');
-
+const postsRouter = require('./routes/posts-router');
+const userRouter = require('./routes/user-router');
 const server = express();
 
 server.use(express.json()); //for posts 
 server.use(helmet()); //a little bit of protection
 server.use(morgan('dev'));
 
-server.use('/api/users',  postsRouter);
+server.use('/api/users',  userRouter); 
+server.use('/', postsRouter);
 
 server.get('/', (req, res) => {
     res.send(`
