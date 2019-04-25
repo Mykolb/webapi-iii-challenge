@@ -55,8 +55,8 @@ router.post('/', (req, res) => {
 
 //GET USER POSTS
 //NEED TO GET THIS WORKING
-router.get('/posts/:id', (req, res) => {
-    const userId = req.params;
+router.get('/:id/posts', (req, res) => {
+    const userId = req.params.id;
     console.log('Get user posts is working')
 
     userDb
