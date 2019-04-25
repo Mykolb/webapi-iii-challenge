@@ -7,7 +7,7 @@ const router = express.Router();
 
 //REQUESTS FOR POSTS
 //GET
-router.get('/posts', (req, res) => {
+router.get('/', (req, res) => {
     postDb
     .get()
     .then(posts => {
@@ -19,7 +19,7 @@ router.get('/posts', (req, res) => {
 })
 
 // GET BY ID
-router.get('/posts/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const postId = req.params.id;
     console.log('request postId is working')
 

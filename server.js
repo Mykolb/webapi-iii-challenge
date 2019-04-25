@@ -12,7 +12,7 @@ server.use(helmet()); //a little bit of protection
 server.use(morgan('dev'));
 
 server.use('/api/users',  userRouter); 
-server.use('/', postsRouter);
+server.use('/api/posts', postsRouter);
 
 server.get('/', (req, res) => {
     res.send(`
@@ -20,6 +20,9 @@ server.get('/', (req, res) => {
     <p>I hope...</p>
     `)
 });
+
+
+
 
 
 module.exports = server;

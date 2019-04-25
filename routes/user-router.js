@@ -2,7 +2,8 @@ const express = require('express');
 const userDb = require('../data/helpers/userDb');
 
 const router = express.Router();
-
+//custom middleware
+// const caps = require('../data/middleware/allCaps');
 
 //REQUESTS FOR USERS /api/posts
 //GET 
@@ -19,15 +20,16 @@ router.get('/', (req, res) => {
 
 //GET BY ID
 router.get('/:id', (req, res) => {
-    const userId = req.params.id;
+    const id = req.params.id;
     console.log('request userId is working')
 
-    if (!userId) {
+    if (id === 0) {
         res.status(404).json({ message: "The user with the specified ID does not exist." })
     }
     userDb 
-    .getById(userId)
+    .getById(id)
     .then(user => {
+        if(id === 0) {}
         res.status(201).json(user);
     })
     .catch(err => {
@@ -40,10 +42,6 @@ router.post('/', (req, res) => {
     const userInfo = req.body;
     console.log('userInfo');
 
-    if (!req.body.name) {
-        res.status(400).json({ errorMessage: "Please provide id and name for the user." })
-    }
-
     userDb
     .insert(userInfo)
     .then(user => {
@@ -54,18 +52,35 @@ router.post('/', (req, res) => {
     })
 })
 
+
+//GET USER POSTS
+//NEED TO GET THIS WORKING
+router.get('/posts/:id', (req, res) => {
+    const userId = req.params;
+    console.log('Get user posts is working')
+
+    userDb
+    .getUserPosts(userId)
+    .then(userPosts => {
+        res.status(201).json(userPosts);
+    })
+    .catch(err => {
+        res.status(500).json({ error: err, message: 'Could not find post associated with this user.'})
+    })
+})
+
 //UPDATE
 router.put('/:id', (req, res) => {
-    const userId = req.params.id;
+    const id = req.params.id;
     const userInfo = req.body;
     console.log('request body:', userInfo);
 
-    if (!userId) {
+    if (!id) {
         res.status(404).json({ message: "The user with the specified ID does not exist."  })
     } 
 
     userDb
-    .update(userId, userInfo)
+    .update(id, userInfo)
     .then(user => {
         res.status(200).json(user);
     })
@@ -76,14 +91,14 @@ router.put('/:id', (req, res) => {
 
 //DELETE
 router.delete('/:id', (req, res) => {
-    const userId = req.params.id;
+    const id = req.params.id;
 
-    if (!userId) {
+    if (!id) {
         res.status(404).json({ message: "The user with the specified ID does not exist." })
     }
 
     userDb
-    .remove(userId)
+    .remove(id)
     .then(deleted => {
         res.status(201).end();
     })
