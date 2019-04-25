@@ -3,7 +3,7 @@ const userDb = require('../data/helpers/userDb');
 
 const router = express.Router();
 //custom middleware
-// const caps = require('../data/middleware/allCaps');
+const allCaps = require('../middleware/allCaps');
 
 //REQUESTS FOR USERS /api/posts
 //GET 
@@ -38,7 +38,7 @@ router.get('/:id', (req, res) => {
 })
 
 //POST
-router.post('/', (req, res) => {
+router.post('/', allCaps, (req, res) => {
     const userInfo = req.body;
     console.log('userInfo');
 
@@ -70,7 +70,7 @@ router.get('/:id/posts', (req, res) => {
 })
 
 //UPDATE
-router.put('/:id', (req, res) => {
+router.put('/:id', allCaps, (req, res) => {
     const id = req.params.id;
     const userInfo = req.body;
     console.log('request body:', userInfo);
